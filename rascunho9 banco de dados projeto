@@ -1,0 +1,54 @@
+import sqlite3
+
+class Barbearia:
+    def __init__(self):
+        self.conn = sqlite3.connect('barbearia.db')
+        self.create_tables()
+
+    def create_tables(self):
+        with self.conn:
+            self.conn.execute('''
+                CREATE TABLE IF NOT EXISTS clientes (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nome TEXT NOT NULL,
+                    telefone TEXT NOT NULL
+                )
+            ''')
+            self.conn.execute('''
+                CREATE TABLE IF NOT EXISTS agendamentos (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    cliente_id INTEGER,
+                    data_hora TEXT NOT NULL,
+                    FOREIGN KEY (cliente_id) REFERENCES clientes (id)
+                )
+            ''')
+
+
+
+    def inserir_cliente(self, nome, telefone):
+        with self.conn:
+            self.conn.execute('INSERT INTO clientes (nome, telefone) VALUES (?, ?)', (nome, telefone))
+        print(f"Cliente {nome} cadastrado com sucesso!")
+
+    def listar_clientes(self):
+        cursor = self.conn.execute('SELECT id, nome, telefone FROM clientes')
+        clientes = cursor.fetchall()
+        if not clientes:
+            print("Nenhum cliente cadastrado.")
+            return
+        print("Clientes cadastrados:")
+        for id, nome, telefone in clientes:
+            print(f"{id}: {nome} - {telefone}")
+
+    def alterar_cliente(self, cliente_id, novo_nome, novo_telefone):
+        with self.conn:
+            self.conn.execute('UPDATE clientes SET nome = ?, telefone = ? WHERE id = ?', (novo_nome, novo_telefone, cliente_id))
+        print(f"Cliente ID {cliente_id} atualizado com sucesso!")
+
+    def excluir_cliente(self, cliente_id):
+        with self.conn:
+            self.conn.execute('DELETE FROM clientes WHERE id = ?', (cliente_id,))
+        print(f"Cliente ID {cliente_id} excluído com sucesso!")
+
+ 
+
