@@ -1,0 +1,78 @@
+class Cliente:
+    def __init__(self, nome, telefone):
+        self.nome = nome
+        self.telefone = telefone
+
+    def __str__(self):
+        return f"{self.nome} - {self.telefone}"
+
+
+class Barbearia:
+    def __init__(self):
+        self.clientes = []
+        self.agendamentos = {}
+
+    def cadastrar_cliente(self, nome, telefone):
+        novo_cliente = Cliente(nome, telefone)
+        self.clientes.append(novo_cliente)
+        print(f"Cliente {nome} cadastrado com sucesso!")
+
+    def listar_clientes(self):
+        if not self.clientes:
+            print("Nenhum cliente cadastrado.")
+            return
+        print("Clientes cadastrados:")
+        for cliente in self.clientes:
+            print(cliente)
+
+    def agendar_atendimento(self, nome_cliente, data_hora):
+        for cliente in self.clientes:
+            if cliente.nome.lower() == nome_cliente.lower():
+                self.agendamentos[data_hora] = cliente
+                print(f"Atendimento agendado para {cliente.nome} em {data_hora}.")
+                return
+        print(f"Cliente {nome_cliente} não encontrado.")
+
+    def listar_agendamentos(self):
+        if not self.agendamentos:
+            print("Nenhum atendimento agendado.")
+            return
+        print("Atendimentos agendados:")
+        for data_hora, cliente in self.agendamentos.items():
+            print(f"{data_hora}: {cliente}")
+
+
+def menu():
+    barbearia = Barbearia()
+
+    while True:
+        print("\nSistema de Atendimento da Barbearia")
+        print("1. Cadastrar Cliente")
+        print("2. Listar Clientes")
+        print("3. Agendar Atendimento")
+        print("4. Listar Agendamentos")
+        print("5. Sair")
+
+        opcao = input("Escolha uma opção: ")
+
+        if opcao == '1':
+            nome = input("Digite o nome do cliente: ")
+            telefone = input("Digite o telefone do cliente: ")
+            barbearia.cadastrar_cliente(nome, telefone)
+        elif opcao == '2':
+            barbearia.listar_clientes()
+        elif opcao == '3':
+            nome_cliente = input("Digite o nome do cliente: ")
+            data_hora = input("Digite a data e hora do atendimento (ex: 2024-10-10 15:30): ")
+            barbearia.agendar_atendimento(nome_cliente, data_hora)
+        elif opcao == '4':
+            barbearia.listar_agendamentos()
+        elif opcao == '5':
+            print("Saindo do sistema...")
+            break
+        else:
+            print("Opção inválida! Tente novamente.")
+
+
+if __name__ == "__main__":
+    menu()
