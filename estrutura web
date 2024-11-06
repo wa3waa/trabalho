@@ -1,0 +1,8 @@
+barbearia_web/
+├── app.py              # Arquivo principal do Flask (backend)
+├── templates/          # Diretório para os templates HTML
+│   ├── index.html      # Página inicial
+│   ├── cadastro.html   # Formulário de cadastro
+│   ├── agendamentos.html  # Listagem de agendamentos
+├── static/             # Diretório para arquivos estáticos (CSS, JS, imagens)
+│   └── style.css       # Arquivo de estilo
